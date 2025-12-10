@@ -143,10 +143,6 @@ section ul {
     padding: 0;
 }
 /* text animation*/
-.p3 {
-    color: rgb(199, 32, 82);
-}
-
 .p3 span {
     display: inline-block;
     transition: font-size 0.3s ease;
@@ -1003,4 +999,5 @@ footer {
     text-align: center;
 
 }
+
 
