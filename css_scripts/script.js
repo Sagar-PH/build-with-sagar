@@ -18,6 +18,26 @@ document.getElementById("contactForm").addEventListener("submit", function (e) {
         });
 });
 
+window.onload = function () {
+    let letters = ['a', 'g', 'a', 'r', ' P', ' H']
+    let tx_join_elem = document.getElementById('text_join')
+
+    letters.forEach((letter, idx)=>{
+        setTimeout(()=>{
+            tx_join_elem.innerHTML = tx_join_elem.innerHTML + letter
+        }, 300 * (idx+1))
+    })
+
+    const desig_elem = document.getElementsByClassName('p3')[0]
+    const span_desig = desig_elem.getElementsByTagName('span')
+
+    Array.from(span_desig).forEach((s_elem, idx)=>{
+        setTimeout(()=>{
+            s_elem.style.textShadow = '-0.15vw 0px rgb(31, 210, 216)'
+        }, 50 * (idx+1))
+    })
+}
+
 function set_neon_style(element) {
     const element_rect = element.getBoundingClientRect();
 
@@ -117,4 +137,5 @@ Array.from(menu_click).forEach((element) => {
         const navbar = document.getElementsByClassName('navbar')[0]
         navbar.classList.remove('navshow')
     })
+
 })
