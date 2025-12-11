@@ -80,7 +80,7 @@
     // ---------- Fade-In on Scroll ----------
     function fadeScrollHandler() {
         const bottom = window.innerHeight - 50;
-        let fade_elems = window.innerHeight > 480? ml_fadeElems : sm_fadeElems
+        let fade_elems = window.innerWidth > 480? ml_fadeElems : sm_fadeElems
 
         fade_elems.forEach((elem) => {
             const rect = elem.getBoundingClientRect();
@@ -197,3 +197,4 @@
         })
     );
 })();
+
