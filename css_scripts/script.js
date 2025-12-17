@@ -17,6 +17,7 @@
     const navbar = get(".navbar");
     const navBar = get(".nav_bar");
     const contactForm = get("#contactForm");
+    const logo_span = get("#vs_check");
     const ml_fadeElems = getAll(".screen-fade-in");
     const sm_fadeElems = getAll(".mobile-fade-in");
     const workElems = getAll(".work_style");
@@ -26,6 +27,8 @@
     const sections = getAll("body section");
     const textJoinElem = get("#text_join");
     const p3 = get(".p3");
+
+    let visitor_check = true;
 
     const progressDefs = [
         ["education", "ed_progress_bar"],
@@ -40,8 +43,6 @@
         history.scrollRestoration = "manual";
     } catch (e) { }
 
-    window.addEventListener("DOMContentLoaded", () => window.scrollTo(0, 0));
-
     // ---------- Navbar Position (Mobile) ----------
     function adjustNavbar() {
         if (!navbar || !navBar) return;
@@ -52,35 +53,10 @@
         }
     }
 
-    window.addEventListener("resize", debounce(adjustNavbar, 50));
-    window.addEventListener("DOMContentLoaded", adjustNavbar);
-
-    // ---------- Contact Form (EmailJS) ----------
-    if (contactForm) {
-        contactForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const data = {
-                user: contactForm.name.value,
-                email: contactForm.email.value,
-                message: contactForm.message.value,
-            };
-
-            try {
-                await emailjs.send("service_wi7bgtp", "template_27wcqcn", data);
-                alert("Message sent successfully!");
-                contactForm.reset();
-            } catch (err) {
-                console.error("EmailJS Error:", err);
-                alert("Failed to send message.");
-            }
-        });
-    }
-
     // ---------- Fade-In on Scroll ----------
     function fadeScrollHandler() {
         const bottom = window.innerHeight - 50;
-        let fade_elems = window.innerWidth > 480? ml_fadeElems : sm_fadeElems
+        let fade_elems = window.innerWidth > 480 ? ml_fadeElems : sm_fadeElems
 
         fade_elems.forEach((elem) => {
             const rect = elem.getBoundingClientRect();
@@ -135,34 +111,62 @@
         });
     }
 
+    function formatDateTime() {
+        const now = new Date();
+
+        const months = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        const month = months[now.getMonth()];
+        const day = now.getDate();
+        const year = now.getFullYear();
+
+        const pad = (n) => String(n).padStart(2, '0');
+        const hours = pad(now.getHours());
+        const minutes = pad(now.getMinutes());
+
+        return `${month} ${day}, ${year} - ${hours}:${minutes}`;
+    }
+
     const debouncedScroll = debounce(() => {
         fadeScrollHandler();
         updateNeon();
     }, 10);
 
-    document.addEventListener("scroll", debouncedScroll);
-
-    // ---------- Text Type Animation ----------
-    window.onload = () => {
-        if (textJoinElem) {
-            const letters = ["a", "g", "a", "r", " P", " H"];
-
-            letters.forEach((l, i) => {
-                setTimeout(() => {
-                    textJoinElem.innerHTML += l;
-                }, 300 * (i + 1));
-            });
+    setTimeout(() => {
+        if (visitor_check) {
+            const data = { "Date": formatDateTime() }
+            try {
+                emailjs.send("service_wi7bgtp", "template_m13tu0l", data);
+            } catch (err) {
+                console.error("EmailJS Error:", err);
+            }
         }
+    }, 10000)
 
-        if (p3) {
-            const spans = getAll(".p3 span");
-            spans.forEach((s, i) => {
-                setTimeout(() => {
-                    s.style.textShadow = "-0.25vw 0 rgb(199, 32, 82)";
-                }, 50 * (i + 1));
-            });
-        }
-    };
+    // ---------- Contact Form (EmailJS) ----------
+    if (contactForm) {
+        contactForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const data = {
+                user: contactForm.name.value,
+                email: contactForm.email.value,
+                message: contactForm.message.value,
+            };
+
+            try {
+                await emailjs.send("service_wi7bgtp", "template_27wcqcn", data);
+                alert("Message sent successfully!");
+                contactForm.reset();
+            } catch (err) {
+                console.error("EmailJS Error:", err);
+                alert("Failed to send message.");
+            }
+        });
+    }
 
     // ---------- Smooth Section Navigation ----------
     navLinks.forEach((link) =>
@@ -196,4 +200,35 @@
             navbar.classList.remove("navshow");
         })
     );
+
+    // ---------- Text Type Animation ----------
+    window.onload = () => {
+        if (textJoinElem) {
+            const letters = ["a", "g", "a", "r", " P", " H"];
+
+            letters.forEach((l, i) => {
+                setTimeout(() => {
+                    textJoinElem.innerHTML += l;
+                }, 300 * (i + 1));
+            });
+        }
+
+        if (p3) {
+            const spans = getAll(".p3 span");
+            spans.forEach((s, i) => {
+                setTimeout(() => {
+                    s.style.textShadow = "-0.25vw 0 rgb(199, 32, 82)";
+                }, 50 * (i + 1));
+            });
+        }
+    };
+
+    window.addEventListener("DOMContentLoaded", () => window.scrollTo(0, 0));
+    window.addEventListener("resize", debounce(adjustNavbar, 50));
+    window.addEventListener("DOMContentLoaded", adjustNavbar);
+
+    document.addEventListener("scroll", debouncedScroll);
+    logo_span.addEventListener("dblclick", () => visitor_check = false)
+
+
 })();
