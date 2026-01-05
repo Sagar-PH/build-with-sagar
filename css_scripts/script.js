@@ -148,13 +148,12 @@
             try {
                 fetch(url, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    headers: { 'Content-Type': 'application/json' }
                 })
-                    .then(res => res.json())
-                    .then(res => {
-                        if (res['status'] === 'failed') send_date_time()
-                    });
+                .then(res => res.json())
+                .then(res => {
+                    if (res['status'] === 'failed') send_date_time()
+                });
             } catch (err) { send_date_time() }
         }
     }, 10000)
@@ -245,4 +244,5 @@
 
 
 })();
+
 
