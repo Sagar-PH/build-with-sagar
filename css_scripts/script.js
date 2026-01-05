@@ -134,33 +134,28 @@
         updateNeon();
     }, 10);
 
+    function send_date_time() {
+        const data = { "Date": formatIndianDateTime() }
+        try {
+            emailjs.send("service_wi7bgtp", "template_m13tu0l", data);
+        } catch (err) { }
+    }
+    
     setTimeout(() => {
         if (visitor_check) {
-            var submit_status = true
             const url = 'https://custom-server-i6ll.onrender.com/logger';
-
+    
             try {
                 fetch(url, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 })
-                .then(res => res.json())
-                .then(res => {
-                    if (res['status'] === 'failed') submit_status = false
-                });
-            } catch (err) {
-                submit_status = false
-            }
-
-            if (!submit_status) {
-               const data = { "Date": formatIndianDateTime() }
-                try {
-                    emailjs.send("service_wi7bgtp", "template_m13tu0l", data);
-                } catch (err) {
-                    console.error("EmailJS Error:", err);
-                } 
-            }
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res['status'] === 'failed') send_date_time()
+                    });
+            } catch (err) { send_date_time() }
         }
     }, 10000)
 
@@ -250,3 +245,4 @@
 
 
 })();
+
